@@ -337,3 +337,37 @@ class Trajectory:
                 w_b1d * w_b1d * np.sin(th_b1d), 0.0])
         else:
             self.mark_traj_end(True)
+
+    def triangle(self):
+        if not self.trajectory_started:
+            self.set_desired_states_to_current()
+
+            # Take-off starts from the current horizontal position.
+            self.xd[0] = self.x[0]
+            self.xd[1] = self.x[1]
+            self.x_init = self.x
+
+            # t=v/d, where t=t_traj, d=takeoff_end_height, and v=takeoff_velocity
+            self.t_traj = (self.takeoff_end_height - self.x[2]) / \
+                self.takeoff_velocity
+
+            # Set the takeoff attitude to the current attitude.
+            self.b1d = self.get_current_b1()
+
+            self.trajectory_started = True
+
+        self.update_current_time()
+
+        if self.t < self.t_traj:
+            self.xd[2] = self.x_init[2] + self.takeoff_velocity * self.t
+            self.xd_2dot[2] = self.takeoff_velocity
+        else:
+            if self.waypoint_reached(self.xd, self.x, 0.04):
+                self.xd[2] = self.takeoff_end_height
+                self.xd_dot[2] = 0.0
+
+                if not self.trajectory_complete:
+                    print('Takeoff complete\nSwitching to manual mode')
+                
+                self.mark_traj_end(True)
+
