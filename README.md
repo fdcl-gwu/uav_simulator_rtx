@@ -73,11 +73,11 @@ It is known that this simulation exhibits unintended behavior if the "real-time 
 ### Setting-up the repository
 1. Clone the repository.
     ```sh
-    git clone https://github.com/fdcl-gwu/uav_simulator.git
+    git clone https://github.com/fdcl-gwu/uav_simulator_rtx.git
     ```
 1. Update the submodules.
     ```sh
-    cd uav_simulator
+    cd uav_simulator_rtx
     git submodule update --init --recursive
     ```
 
