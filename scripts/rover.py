@@ -146,43 +146,43 @@ class Rover:
 
 
 
-    def reset_uav():
-        """
-        It is used to reset the UAV to its initial state.
+def reset_uav():
+    """
+    It is used to reset the UAV to its initial state.
 
-        The function first waits for the set_model_state service to become available. 
-            It then sets the initial position and attitude of the UAV to (0, 0, 0.2) and 
-            (0, 0, 0, 1) respectively. It also sets the initial velocity of the UAV to zero.
+    The function first waits for the set_model_state service to become available. 
+        It then sets the initial position and attitude of the UAV to (0, 0, 0.2) and 
+        (0, 0, 0, 1) respectively. It also sets the initial velocity of the UAV to zero.
 
-        The function then creates a ModelState object with the initial pose and velocity of the UAV. 
-            It calls the set_model_state service to reset the UAV to its initial state 
-            using the ModelState object.
+    The function then creates a ModelState object with the initial pose and velocity of the UAV. 
+        It calls the set_model_state service to reset the UAV to its initial state 
+        using the ModelState object.
 
-        Finally, the function prints a message indicating that the reset was successful.
-        """
-        
-        # Wait for the set_model_state service to become available
-        rospy.wait_for_service('/gazebo/set_model_state')
-        
-        # Set the initial position and attitude of the UAV
-        init_position = Point(x=0.0, y=0.0, z=0.2)
-        init_attitude = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
-        init_pose = Pose(position=init_position, orientation=init_attitude)
+    Finally, the function prints a message indicating that the reset was successful.
+    """
+    
+    # Wait for the set_model_state service to become available
+    rospy.wait_for_service('/gazebo/set_model_state')
+    
+    # Set the initial position and attitude of the UAV
+    init_position = Point(x=0.0, y=0.0, z=0.2)
+    init_attitude = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
+    init_pose = Pose(position=init_position, orientation=init_attitude)
 
-        # Set the initial velocity of the UAV to zero
-        zero_motion = Vector3(x=0.0, y=0.0, z=0.0)
-        init_velocity = Twist(linear=zero_motion, angular=zero_motion)
+    # Set the initial velocity of the UAV to zero
+    zero_motion = Vector3(x=0.0, y=0.0, z=0.0)
+    init_velocity = Twist(linear=zero_motion, angular=zero_motion)
 
-        # Create a ModelState object with the initial pose and velocity
-        model_state = ModelState(model_name='uav', reference_frame='world', \
-            pose=init_pose, twist=init_velocity)
-        
-        # Call the set_model_state service to reset the UAV to its initial state
-        reset_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-        reset_state(model_state)
+    # Create a ModelState object with the initial pose and velocity
+    model_state = ModelState(model_name='uav', reference_frame='world', \
+        pose=init_pose, twist=init_velocity)
+    
+    # Call the set_model_state service to reset the UAV to its initial state
+    reset_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+    reset_state(model_state)
 
-        # Print a message indicating that the reset was successful
-        print('Resetting UAV successful ..')
+    # Print a message indicating that the reset was successful
+    print('Resetting UAV successful ..')
 
 
 rover = Rover()
