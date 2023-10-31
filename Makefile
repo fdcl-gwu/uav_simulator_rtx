@@ -7,7 +7,4 @@ launch:
 	@roslaunch $(PACKAGE) $(LAUNCH_FILE)
 
 uav:
-	@python3 ./scripts/main.py
-
-env:
-	@echo "cd devel && source setup.bash && cd ../"
+	@cd ./scripts && while true; do python3 main.py; sleep 0.1; done
