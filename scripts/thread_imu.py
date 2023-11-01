@@ -44,7 +44,7 @@ def thread_imu():
         dt = (t - t_pre).total_seconds()
 
         # If the time difference is too small, skip this iteration
-        if dt < 1e-6:
+        if dt < 5e-4:
             continue
 
         # Calculate the frequency of the IMU updates

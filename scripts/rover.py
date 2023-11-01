@@ -16,6 +16,8 @@ from gazebo_msgs.srv import SetModelState
 from sensor_msgs.msg import Imu
 from std_msgs.msg import String
 
+from icecream import ic
+
 
 class Rover:
     def __init__(self):
@@ -111,6 +113,8 @@ class Rover:
         q_gazebo = message.orientation
         a_gazebo = message.linear_acceleration
         W_gazebo = message.angular_velocity
+        
+        # ic(q_gazebo, a_gazebo, W_gazebo)
 
         # Convert the orientation quaternion to a rotation matrix
         q = np.array([q_gazebo.x, q_gazebo.y, q_gazebo.z, q_gazebo.w])
