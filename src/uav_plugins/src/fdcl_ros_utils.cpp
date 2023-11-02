@@ -1,26 +1,21 @@
-#include "fdcl/ros_utils.hpp"
 #include "fdcl/matrix_utils.hpp"
-
+#include "fdcl/ros_utils.hpp"
 
 void fdcl::eigen_to_ignition(
-    const Vector3 input, ignition::math::Vector3d &output
-)
+    const Vector3 input, ignition::math::Vector3d &output)
 {
     output[0] = input(0);
     output[1] = input(1);
     output[2] = input(2);
 }
 
-
 void fdcl::ignition_to_eigen(
-    const ignition::math::Vector3d input, Vector3 &output
-)
+    const ignition::math::Vector3d input, Vector3 &output)
 {
     output(1) = input[0];
     output(2) = input[1];
     output(3) = input[2];
 }
-
 
 void fdcl::quaternion_to_R(const ignition::math::Quaterniond q, Matrix3 &R)
 {
