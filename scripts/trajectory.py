@@ -64,6 +64,11 @@ class Trajectory:
         self.circle_W = 1.2                 # (rad/s)
         self.circle_radius = 1.2            # (m)
 
+        # Triangle : s = arc length, r = radius, and t = time
+        self.triangle_start = np.zeros(3)
+        #w = (s / r) / t
+	
+
         self.waypoint_speed = 2.0           # (m/s)
 
         self.e1 = np.array([1.0, 0.0, 0.0]) # (3x1 numpy array) unit vector in the x-direction
@@ -524,3 +529,31 @@ class Trajectory:
         else:
             # If trajectory is complete, mark it as such
             self.mark_traj_end(True)
+
+
+    def triangle(self):
+        if not self.trajectory_started:
+            self.set_desired_states_to_current()
+            self.trajectory_started = True
+            # Define the parameters for the triangular trajectory
+            amplitude = 1.0  # Amplitude of the triangle
+            period = 4.0  # Period of the triangle wave (in seconds)
+
+            # Calculate the phase of the triangle wave
+            t_phase = (self.t - self.t_traj) % period
+                
+            # Calculate the position along the triangle trajectory
+            if t_phase < period / 2:
+                # First half of the period, ascending part of the triangle
+                self.xd[0] = amplitude * t_phase / (period / 2)
+            else:
+                # Second half of the period, descending part of the triangle
+                self.xd[0] = amplitude - amplitude * (t_phase - period / 2) / (period / 2)
+        
+        self.update_current_time()
+        
+        if self.t > self.t_traj + period:
+        # Mark the trajectory as complete
+            self.mark_traj_end(True) 
+
+
