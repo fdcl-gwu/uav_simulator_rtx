@@ -61,7 +61,20 @@ class Trajectory:
         self.circle_W = 1.2
         self.circle_radius = 1.2
 
-        self.waypoint_speed = 2.0  # (m/s)
+        # Triangle
+        self.vertex1 = np.array([0.0, 0.0, 0.0])
+        self.vertex2 = np.array([0.0, 0.0, 0.0])
+        self.vertex3 = np.array([0.0, 0.0, 0.0])
+        self.side1_len = 1
+        self.side2_len = 1
+        self.side3_len = 1
+        self.numTri = 0
+
+        self.t1 = 0.0
+        self.t2 = 0.0
+        self.t3 = 0.0
+
+        self.waypoint_speed = 1.0  # (m/s)
 
         self.e1 = np.array([1.0, 0.0, 0.0])
 
@@ -101,6 +114,8 @@ class Trajectory:
             self.stay()
         elif self.mode == 5:  # circle
             self.circle()
+        elif self.mode == 6:
+            self.triangle()
 
 
     def mark_traj_start(self):
@@ -277,6 +292,7 @@ class Trajectory:
 
             
     def stay(self):
+        print("STAYYY")
         if not self.trajectory_started:
             self.set_desired_states_to_current()
             self.trajectory_started = True
@@ -297,7 +313,6 @@ class Trajectory:
                 + num_circles * 2 * np.pi / self.circle_W
 
         self.update_current_time()
-
         if self.t < (self.circle_radius / self.circle_linear_v):
             self.xd[0] = self.circle_center[0] + self.circle_linear_v * self.t
             self.xd_dot[0] = self.circle_linear_v
@@ -338,36 +353,115 @@ class Trajectory:
         else:
             self.mark_traj_end(True)
 
-    def triangle(self):
-        if not self.trajectory_started:
-            self.set_desired_states_to_current()
+#    def triangle(self):
+#        if not self.trajectory_started:
+#            self.set_desired_states_to_zero()
 
             # Take-off starts from the current horizontal position.
-            self.xd[0] = self.x[0]
-            self.xd[1] = self.x[1]
-            self.x_init = self.x
+            #self.xd[0] = self.x[0]
+            #self.xd[1] = self.x[1]
+            #self.x_init = self.x
 
             # t=v/d, where t=t_traj, d=takeoff_end_height, and v=takeoff_velocity
-            self.t_traj = (self.takeoff_end_height - self.x[2]) / \
-                self.takeoff_velocity
+            #self.t_traj = (self.takeoff_end_height - self.x[2]) / \
+                #self.takeoff_velocity
 
             # Set the takeoff attitude to the current attitude.
-            self.b1d = self.get_current_b1()
+#            self.b1d = self.get_current_b1()
+#
+#            self.trajectory_started = True
 
+#        self.update_current_time()
+#
+ #       if self.t < self.t_traj:
+  #          self.xd[2] = self.x_init[2] + self.takeoff_velocity * self.t
+   #         self.xd_2dot[2] = self.takeoff_velocity
+    #    else:
+     #       if self.waypoint_reached(self.xd, self.x, 0.04):
+      #         self.xd_dot[2] = 0.0
+
+       #         if not self.trajectory_complete:
+        #            print('Takeoff complete\nSwitching to manual mode')
+         #       
+          #      self.mark_traj_end(True)
+    def triangle(self):
+        print("TRIANGLEE")
+        if not self.trajectory_started:
+            self.set_desired_states_to_current()
+            self.trajectory_started = True
+
+            #self.vertex1 = np.array([0.0, 4.0, 0.0])
+            #self.vertex2 = np.array([0.0, 2.0, 0.0])
+            #self.vertex3 = np.array([0.0, 0.0, 0.0])
+            self.numTri = 3
+            self.vertex3 = np.copy(self.x)
+            self.vertex1 = np.copy(self.x)
+            self.vertex1[2] -= 3
+            
+            self.vertex2 = np.copy(self.x)
+            self.vertex2[1] -= 4
+
+            self.side1_len = np.linalg.norm(self.vertex2 - self.vertex1)
+            self.side2_len = np.linalg.norm(self.vertex3 - self.vertex2)
+            self.side3_len = np.linalg.norm(self.vertex1 - self.vertex3)
+
+            total_len = self.side1_len + self.side2_len + self.side3_len
+
+            self.t1 = self.side1_len / self.waypoint_speed
+            self.t2 = self.side2_len / self.waypoint_speed
+            self.t3 = self.side3_len / self.waypoint_speed
+
+            self.t_traj = (self.t1 + self.t2 + self.t3)
+            print("FIRSTTTT", self.t, self.t1, self.t2, self.t3)
+        self.update_current_time()
+
+        print(self.t, self.t_traj)
+        if self.t < self.t_traj:
+            print("Hellooo")
+            if self.t < self.t1:
+                print("1st IFFFF", self.xd)
+                self.xd = self.vertex1 + (self.waypoint_speed * self.t) * (self.vertex2 - self.vertex1) / self.side1_len
+                print("AFTERERRERERER", self.xd)
+                self.xd_dot = self.waypoint_speed * (self.vertex2 - self.vertex1) / self.side1_len
+            elif self.t < self.t1 + self.t2:
+                self.xd = self.vertex2 + (self.waypoint_speed * (self.t - self.t1)) * (self.vertex3 - self.vertex2) / self.side2_len
+                self.xd_dot = self.waypoint_speed * (self.vertex3 - self.vertex2) / self.side2_len
+            else:
+                self.xd = self.vertex3
+                self.xd_dot = np.zeros(3)
+        else:
+            self.mark_traj_end(True)
+            #amplitude = 1.0
+            #period = 4.0
+            #t_phase = (self.t - self.t_traj) % period
+
+            #if t_phase < period /2:
+            #    self.xd[0] = amplitude * t_phase /(period /2)
+            #else:
+            #    self.xd[0] = amplitude - amplitude * (t_phase - period / 2) / (period / 2)
+
+        #self.update_current_time()
+        #if self.t > self.t_traj + period:
+            #self.mark_traj_end(True)
+'''
+self.t_traj = 10.0
+
+            self.b1d = self.get_current_b1()
             self.trajectory_started = True
 
         self.update_current_time()
 
         if self.t < self.t_traj:
-            self.xd[2] = self.x_init[2] + self.takeoff_velocity * self.t
-            self.xd_2dot[2] = self.takeoff_velocity
+            self.xd[2] = self.x_init[2] + (self.t / self.t_traj) * 5.0
+            self.xd_2dot[2] = 5.0 / self.t_traj
         else:
-            if self.waypoint_reached(self.xd, self.x, 0.04):
-                self.xd[2] = self.takeoff_end_height
-                self.xd_dot[2] = 0.0
-
-                if not self.trajectory_complete:
-                    print('Takeoff complete\nSwitching to manual mode')
-                
-                self.mark_traj_end(True)
-
+            if self.x[2] > 0.05: 
+                self.xd[2] = self.x_init[2] + (self.t / self.t_traj) * 5.0
+                self.xd_2dot[2] = 5.0/self.t_traj
+            else:
+                if self.x[2] > 0.05:
+                    self.xd[2] = 0.05
+                    self.xd_dot[2] = 0.0
+                else:
+                    self.mark_traj_end(True)
+        ''' 
