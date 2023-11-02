@@ -41,7 +41,7 @@ class Gui():
         self.lbl_freq_control = self.builder.get_object('lbl_freq_control')
         self.lbl_freq_log = self.builder.get_object('lbl_freq_log')
 
-        self.modes = ['Idle', 'Warm-up', 'Take-off', 'Land', 'Stay', 'Circle']
+        self.modes = ['Idle', 'Warm-up', 'Take-off', 'Land', 'Stay', 'Circle', 'Triangle']
         self.rdo_mode = []
         for i in range(len(self.modes)):
             self.rdo_mode.append(
@@ -135,6 +135,10 @@ class Gui():
             rover.yaw_offset = 0.0
         elif key == Gdk.KEY_5:
             self.rdo_mode[5].set_active(True)
+            rover.x_offset = np.zeros(3)
+            rover.yaw_offset = 0.0
+        elif key == Gdk.KEY_6:
+            self.rdo_mode[6].set_active(True)
             rover.x_offset = np.zeros(3)
             rover.yaw_offset = 0.0
         elif key == Gdk.KEY_W or key == Gdk.KEY_w:

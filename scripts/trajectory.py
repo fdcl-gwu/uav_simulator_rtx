@@ -64,10 +64,20 @@ class Trajectory:
         self.circle_W = 1.2                 # (rad/s)
         self.circle_radius = 1.2            # (m)
 
-        # Triangle : s = arc length, r = radius, and t = time
-        self.triangle_start = np.zeros(3)
-        #w = (s / r) / t
-	
+        # Triangle
+        self.vertex1 = np.array([0.0, 0.0, 0.0])
+        self.vertex2 = np.array([0.0, 0.0, 0.0])
+        self.vertex3 = np.array([0.0, 0.0, 0.0])
+        self.side1_len = 1
+        self.side2_len = 1
+        self.side3_len = 1
+        self.numTri = 0
+
+        self.t1 = 0.0
+        self.t2 = 0.0
+        self.t3 = 0.0
+
+        self.waypoint_speed = 1.0  # (m/s)
 
         self.waypoint_speed = 2.0           # (m/s)
 
@@ -144,6 +154,8 @@ class Trajectory:
             self.stay()
         elif self.mode == 5:  # circle
             self.circle()
+        elif self.mode == 6:
+            self.triangle()
 
 
     def mark_traj_start(self) -> None:
@@ -459,6 +471,7 @@ class Trajectory:
 
             
     def stay(self):
+        print("STAYYY")
         if not self.trajectory_started:
             self.set_desired_states_to_current()
             self.trajectory_started = True
@@ -484,8 +497,6 @@ class Trajectory:
 
         # Update current time
         self.update_current_time()
-
-        # Calculate desired position and velocity based on current time
         if self.t < (self.circle_radius / self.circle_linear_v):
             # If still in linear portion of trajectory, calculate position and velocity along axis 1
             self.xd[0] = self.circle_center[0] + self.circle_linear_v * self.t
@@ -530,30 +541,84 @@ class Trajectory:
             # If trajectory is complete, mark it as such
             self.mark_traj_end(True)
 
-
     def triangle(self):
+        print("TRIANGLEE")
         if not self.trajectory_started:
             self.set_desired_states_to_current()
             self.trajectory_started = True
-            # Define the parameters for the triangular trajectory
-            amplitude = 1.0  # Amplitude of the triangle
-            period = 4.0  # Period of the triangle wave (in seconds)
 
-            # Calculate the phase of the triangle wave
-            t_phase = (self.t - self.t_traj) % period
-                
-            # Calculate the position along the triangle trajectory
-            if t_phase < period / 2:
-                # First half of the period, ascending part of the triangle
-                self.xd[0] = amplitude * t_phase / (period / 2)
-            else:
-                # Second half of the period, descending part of the triangle
-                self.xd[0] = amplitude - amplitude * (t_phase - period / 2) / (period / 2)
-        
+            #self.vertex1 = np.array([0.0, 4.0, 0.0])
+            #self.vertex2 = np.array([0.0, 2.0, 0.0])
+            #self.vertex3 = np.array([0.0, 0.0, 0.0])
+            self.numTri = 3
+            self.vertex3 = np.copy(self.x)
+            self.vertex1 = np.copy(self.x)
+            self.vertex1[2] -= 3
+            
+            self.vertex2 = np.copy(self.x)
+            self.vertex2[1] -= 4
+
+            self.side1_len = np.linalg.norm(self.vertex2 - self.vertex1)
+            self.side2_len = np.linalg.norm(self.vertex3 - self.vertex2)
+            self.side3_len = np.linalg.norm(self.vertex1 - self.vertex3)
+
+            total_len = self.side1_len + self.side2_len + self.side3_len
+
+            self.t1 = self.side1_len / self.waypoint_speed
+            self.t2 = self.side2_len / self.waypoint_speed
+            self.t3 = self.side3_len / self.waypoint_speed
+
+            self.t_traj = (self.t1 + self.t2 + self.t3)
+            print("FIRSTTTT", self.t, self.t1, self.t2, self.t3)
         self.update_current_time()
-        
-        if self.t > self.t_traj + period:
-        # Mark the trajectory as complete
-            self.mark_traj_end(True) 
 
+        print(self.t, self.t_traj)
+        if self.t < self.t_traj:
+            print("Hellooo")
+            if self.t < self.t1:
+                print("1st IFFFF", self.xd)
+                self.xd = self.vertex1 + (self.waypoint_speed * self.t) * (self.vertex2 - self.vertex1) / self.side1_len
+                print("AFTERERRERERER", self.xd)
+                self.xd_dot = self.waypoint_speed * (self.vertex2 - self.vertex1) / self.side1_len
+            elif self.t < self.t1 + self.t2:
+                self.xd = self.vertex2 + (self.waypoint_speed * (self.t - self.t1)) * (self.vertex3 - self.vertex2) / self.side2_len
+                self.xd_dot = self.waypoint_speed * (self.vertex3 - self.vertex2) / self.side2_len
+            else:
+                self.xd = self.vertex3
+                self.xd_dot = np.zeros(3)
+        else:
+            self.mark_traj_end(True)
+            #amplitude = 1.0
+            #period = 4.0
+            #t_phase = (self.t - self.t_traj) % period
 
+            #if t_phase < period /2:
+            #    self.xd[0] = amplitude * t_phase /(period /2)
+            #else:
+            #    self.xd[0] = amplitude - amplitude * (t_phase - period / 2) / (period / 2)
+
+        #self.update_current_time()
+        #if self.t > self.t_traj + period:
+            #self.mark_traj_end(True)
+'''
+self.t_traj = 10.0
+
+            self.b1d = self.get_current_b1()
+            self.trajectory_started = True
+
+        self.update_current_time()
+
+        if self.t < self.t_traj:
+            self.xd[2] = self.x_init[2] + (self.t / self.t_traj) * 5.0
+            self.xd_2dot[2] = 5.0 / self.t_traj
+        else:
+            if self.x[2] > 0.05: 
+                self.xd[2] = self.x_init[2] + (self.t / self.t_traj) * 5.0
+                self.xd_2dot[2] = 5.0/self.t_traj
+            else:
+                if self.x[2] > 0.05:
+                    self.xd[2] = 0.05
+                    self.xd_dot[2] = 0.0
+                else:
+                    self.mark_traj_end(True)
+        ''' 
