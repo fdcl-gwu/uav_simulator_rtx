@@ -18,7 +18,7 @@ class Control:
         t_prev: (float) time since epoch in the previous loop [s]
         dt: (float) time difference between two calls to the controller [s]
 
-        x: (3x1 numpy array) current position of the UAV [m]
+        x: (3x1 numpy array) current position of the UAV [m] x, y, z
         v: (3x1 numpy array) current velocity of the UAV [m/s]
         a: (3x1 numpy array) current acceleration of the UAV [m/s^s]
         R: (3x3 numpy array) current attitude of the UAV in SO(3)
