@@ -5,8 +5,8 @@
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
-    <arg name="recording" value="true"/>
-    <arg name="debug" value="true"/>
+    <arg name="recording" value="false"/>
+    <arg name="debug" value="false"/>
   </include>
 
   <param name="robot_description"
