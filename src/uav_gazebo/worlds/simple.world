@@ -1,6 +1,13 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
   <world name="default">
+
+    <gui>
+      <camera name="user_camera">
+        <pose>10 0 4 0 0.2 -15.7</pose>
+      </camera>
+    </gui>
+
     <model name="ground_plane">
       <static>true</static>
       <link name="link">
@@ -8,7 +15,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>1000 1000</size>
+              <size>100 100</size>
             </plane>
           </geometry>
           <surface>
@@ -26,7 +33,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>400 10</size>
+              <size>50 5</size>
             </plane>
           </geometry>
           <material>
@@ -43,7 +50,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>1000 1000</size>
+              <size>100 100</size>
             </plane>
           </geometry>
           <material>
