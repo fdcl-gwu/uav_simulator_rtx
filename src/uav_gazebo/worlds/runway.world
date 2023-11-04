@@ -1,32 +1,12 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
   <world name="default">
+
     <gui>
       <camera name="user_camera">
-        <pose>-5 0 1 0 0.2 0</pose>
+        <pose>10 0 4 0 0.2 -15.7</pose>
       </camera>
     </gui>
-    <physics type="ode">
-      <ode>
-        <solver>
-          <type>quick</type>
-          <iters>100</iters>
-          <sor>1.0</sor>
-        </solver>
-        <constraints>
-          <cfm>0.0</cfm>
-          <erp>0.2</erp>
-          <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
-          <contact_surface_layer>0.0</contact_surface_layer>
-        </constraints>
-      </ode>
-      <real_time_update_rate>-1</real_time_update_rate>
-      <!-- <max_step_size>0.0020</max_step_size> -->
-    </physics>
-    <gravity>0 0 -9.8</gravity>
-    <include>
-      <uri>model://sun</uri>
-    </include>
 
     <model name="ground_plane">
       <static>true</static>
@@ -35,7 +15,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>5000 5000</size>
+              <size>100 100</size>
             </plane>
           </geometry>
           <surface>
@@ -53,7 +33,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>1829 45</size>
+              <size>50 5</size>
             </plane>
           </geometry>
           <material>
@@ -70,7 +50,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>5000 5000</size>
+              <size>100 100</size>
             </plane>
           </geometry>
           <material>
@@ -84,10 +64,8 @@
       </link>
     </model>
 
-    <model name="iris_demo">
-      <include>
-        <uri>model://iris_with_ardupilot</uri>
-      </include>
-    </model>
+    <include>
+      <uri>model://sun</uri>
+    </include>
   </world>
 </sdf>

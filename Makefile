@@ -1,10 +1,16 @@
 PACKAGE=uav_gazebo
-LAUNCH_FILE=simple_world.launch
+f=uav_rover
 
 .PHONY: launch
 
 launch:
-	@roslaunch $(PACKAGE) $(LAUNCH_FILE)
+	@roslaunch $(PACKAGE) $(f).launch
 
-uav:
-	@cd ./scripts && while true; do python3 main.py; sleep 0.1; done
+rover:
+	@roslaunch $(PACKAGE) rover.launch
+
+simple:
+	@roslaunch $(PACKAGE) simple_world.launch
+
+uav-old:
+	@cd ./scripts && python3 main.py
