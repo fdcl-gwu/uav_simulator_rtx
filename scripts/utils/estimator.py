@@ -1,4 +1,4 @@
-from matrix_utils import hat, vee, expm_SO3
+from .matrix_utils import hat, vee, expm_SO3
 
 import datetime
 import numpy as np

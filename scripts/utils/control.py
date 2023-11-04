@@ -1,5 +1,5 @@
-from matrix_utils import hat, vee, deriv_unit_vector, saturate
-from integral_utils import IntegralError, IntegralErrorVec3
+from .matrix_utils import hat, vee, deriv_unit_vector, saturate
+from .integral_utils import IntegralError, IntegralErrorVec3
 
 import datetime
 import numpy as np

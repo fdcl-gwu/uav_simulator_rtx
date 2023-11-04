@@ -1,7 +1,7 @@
-from matrix_utils import hat, vee, q_to_R
-from control import Control
-from estimator import Estimator
-from trajectory import Trajectory
+from .matrix_utils import hat, vee, q_to_R
+from .control import Control
+from .estimator import Estimator
+from .trajectory import Trajectory
 
 import datetime
 import numpy as np
@@ -114,8 +114,6 @@ class Rover:
         a_gazebo = message.linear_acceleration
         W_gazebo = message.angular_velocity
         
-        # ic(q_gazebo, a_gazebo, W_gazebo)
-
         # Convert the orientation quaternion to a rotation matrix
         q = np.array([q_gazebo.x, q_gazebo.y, q_gazebo.z, q_gazebo.w])
         R_gi = q_to_R(q) # IMU to Gazebo frame
@@ -150,7 +148,7 @@ class Rover:
 
 
 
-def reset_uav():
+def reset_uav(model_name: str = 'uav'):
     """
     It is used to reset the UAV to its initial state.
 
@@ -178,8 +176,12 @@ def reset_uav():
     init_velocity = Twist(linear=zero_motion, angular=zero_motion)
 
     # Create a ModelState object with the initial pose and velocity
-    model_state = ModelState(model_name='uav', reference_frame='world', \
-        pose=init_pose, twist=init_velocity)
+    model_state = ModelState(
+        model_name=model_name, 
+        reference_frame='world',
+        pose=init_pose, 
+        twist=init_velocity
+    )
     
     # Call the set_model_state service to reset the UAV to its initial state
     reset_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)

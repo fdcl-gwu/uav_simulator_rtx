@@ -43,6 +43,7 @@ namespace gazebo {
 
             // Start the ROS subscriber.
             this->topic_name = _sdf->GetElement("topicName")->Get<std::string>();
+            std::cout << "topic name: " << this->topic_name << std::endl;
             this->sub_fm = this->n.subscribe(this->topic_name, 1,
                                              UavControlPlugin::update_fm);
         }

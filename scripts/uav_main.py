@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-from rover import rover, reset_uav
-
-from gui import thread_gui
-from thread_imu import thread_imu
-from thread_gps import thread_gps
-from thread_control import thread_control
-from thread_log import thread_log
+from utils.rover import rover, reset_uav
+from utils.gui import thread_gui
+from utils.thread_imu import thread_imu
+from utils.thread_gps import thread_gps
+from utils.thread_control import thread_control
+from utils.thread_log import thread_log
 
 import numpy as np
 import rospy

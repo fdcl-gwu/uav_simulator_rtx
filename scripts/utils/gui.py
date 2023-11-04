@@ -1,5 +1,5 @@
-from rover import rover
-from plot_utils import plot_data
+from .rover import rover
+from .plot_utils import plot_data
 
 import gi
 import numpy as np
@@ -13,7 +13,9 @@ class Gui():
     def __init__(self):
 
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("gui.glade")
+        
+        # with perspective from the script directory
+        self.builder.add_from_file("utils/gui.glade")
 
         self.window = self.builder.get_object('window_main')
         self.window.set_title('UAV Simulator')

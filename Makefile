@@ -6,11 +6,14 @@ f=uav_rover
 launch:
 	@roslaunch $(PACKAGE) $(f).launch
 
-rover:
+launch-rover:
 	@roslaunch $(PACKAGE) rover.launch
 
 simple:
 	@roslaunch $(PACKAGE) simple_world.launch
 
-uav-old:
-	@cd ./scripts && python3 main.py
+uav:
+	@cd ./scripts && python3 uav_main.py
+
+rover:
+	@cd ./scripts && python3 rover_main.py

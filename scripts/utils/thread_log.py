@@ -1,4 +1,4 @@
-from rover import rover
+from .rover import rover
 
 import datetime
 import numpy as np
@@ -16,7 +16,9 @@ def thread_log():
 
     header_written = False
     file_open = False
-    file_name = rover.t0.strftime('data_logs/log_%Y%m%d_%H%M%S.txt')
+    
+    # with perspective from the script directory
+    file_name = rover.t0.strftime('./data_logs/log_%Y%m%d_%H%M%S.txt')
 
     rate = rospy.Rate(freq)
 

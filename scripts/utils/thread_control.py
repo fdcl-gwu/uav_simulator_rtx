@@ -1,4 +1,4 @@
-from rover import rover
+from .rover import rover
 
 import datetime
 import numpy as np
