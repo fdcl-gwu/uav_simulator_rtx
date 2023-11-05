@@ -1,0 +1,4 @@
+<launch>
+    <param name="uav" command="$(find xacro)/xacro '$(find uav_gazebo)/urdf/uav.xacro'" />
+    <node name="urdf_spawner_uav" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model uav -param uav"/>
+</launch>

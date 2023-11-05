@@ -1,7 +1,8 @@
 <?xml version="1.6"?>
 <robot>
   <gazebo reference="rover_link">
-    <gravity>true</gravity>    
+    <material>Gazebo/Red</material>    
+    <gravity>true</gravity>
     <sensor name="rover_imu_sensor" type="imu">
       <always_on>true</always_on>
       <update_rate>100</update_rate>

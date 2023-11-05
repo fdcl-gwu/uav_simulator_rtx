@@ -7,7 +7,7 @@ import rospy
 from sensor_msgs.msg import Imu
 
 
-def thread_imu():
+def thread_imu(topic_name: str = 'uav_imu'):
     """
     The function first subscribes to the uav_imu topic and sets the callback function to 
         rover.ros_imu_callback. It then sets the rate to 100 Hz.
@@ -25,7 +25,7 @@ def thread_imu():
     print('IMU: thread starting ..')
 
     # Subscribe to the 'uav_imu' topic and set the callback function to rover.ros_imu_callback
-    rospy.Subscriber('uav_imu', Imu, rover.ros_imu_callback)
+    rospy.Subscriber(topic_name, Imu, rover.ros_imu_callback)
 
     # Set the rate to 100 Hz
     rate = rospy.Rate(100)

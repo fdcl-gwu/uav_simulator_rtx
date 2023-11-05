@@ -13,16 +13,15 @@ import std_msgs
 import threading
 import time
 
-IMU_TOPIC_NAME = 'uav_imu'
 
-def run_uav():
+def run_rover():
 
-    rospy.init_node('uav', anonymous=True)
+    rospy.init_node('rover', anonymous=True)
     reset_uav()
 
     # Create threads
     t1 = threading.Thread(target=thread_control)
-    t2 = threading.Thread(target=thread_imu, args=(IMU_TOPIC_NAME,))
+    t2 = threading.Thread(target=thread_imu)
     t3 = threading.Thread(target=thread_gps)
     t4 = threading.Thread(target=thread_gui)
     t5 = threading.Thread(target=thread_log)
@@ -43,4 +42,4 @@ def run_uav():
 
 
 if __name__ == '__main__':
-    run_uav()
+    run_rover()

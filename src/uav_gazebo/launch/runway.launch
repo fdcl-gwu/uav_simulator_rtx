@@ -9,11 +9,5 @@
         <arg name="recording" value="false"/>
         <arg name="debug" value="false"/>
     </include>
-
-    <param name="uav" command="$(find xacro)/xacro '$(find uav_gazebo)/urdf/uav.xacro'" />
-    <node name="urdf_spawner_uav" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model uav -param uav"/>
-
-    <param name="rover" command="$(find xacro)/xacro '$(find uav_gazebo)/urdf/rover.xacro'" />
-    <node name="urdf_spawner_rover" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model rover -param rover -x -10 -y 0 -z 0 -R 0 -P 0 -Y -1.5707"/>
 </launch>
   
