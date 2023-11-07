@@ -385,6 +385,113 @@ class Trajectory:
         #            print('Takeoff complete\nSwitching to manual mode')
          #       
           #      self.mark_traj_end(True)
+    # def triangle(self):
+    #     print("TRIANGLEE")
+    #     if not self.trajectory_started:
+    #         self.set_desired_states_to_current()
+    #         self.trajectory_started = True
+
+    #         #self.vertex1 = np.array([0.0, 4.0, 0.0])
+    #         #self.vertex2 = np.array([0.0, 2.0, 0.0])
+    #         #self.vertex3 = np.array([0.0, 0.0, 0.0])
+
+    #         self.vertex3 = np.copy(self.x)
+    #         self.vertex1 = np.copy(self.x)
+    #         self.vertex1[2] -= 4
+            
+    #         self.vertex2 = np.copy(self.x)
+    #         self.vertex2[1] -= 3
+
+    #         self.side1_len = np.linalg.norm(self.vertex2 - self.vertex1)
+    #         self.side2_len = np.linalg.norm(self.vertex3 - self.vertex2)
+    #         self.side3_len = np.linalg.norm(self.vertex1 - self.vertex3)
+
+    #         total_len = self.side1_len + self.side2_len + self.side3_len
+
+    #         self.t1 = self.side1_len / self.waypoint_speed
+    #         self.t2 = self.side2_len / self.waypoint_speed
+    #         self.t3 = self.side3_len / self.waypoint_speed
+
+    #         self.t_traj = (self.t1 + self.t2 + self.t3) * 3
+    #         print("FIRSTTTT", self.t, self.t1, self.t2, self.t3)
+    #     self.update_current_time()
+
+    #     if(self.numTri != 0):
+    #     #print(self.t, self.t_traj)
+    #         #if self.t < self.t_traj:
+    #         if self.arrivedCheck[0] == 0:
+    #             print("------1111111111111------------------------------------------------------------------------------------")
+    #             self.xd = self.vertex1 
+    #             self.xd_dot = self.waypoint_speed * (self.vertex2 - self.vertex1) / self.side1_len
+    #             if self.x[2]-1 < self.xd[2]:
+    #                 self.arrivedCheck[0] = 1
+                    
+    #         elif self.arrivedCheck[1] == 0:
+    #             print("------22222222------------------------------------------------------------------------------------")
+    #             self.xd = self.vertex2 
+    #             self.xd_dot = self.waypoint_speed * (self.vertex3 - self.vertex2) / self.side2_len
+    #             if self.x[1]+0.1 > self.xd[1]:
+    #                 self.arrivedCheck[1] = 1
+    #         elif self.arrivedCheck[2] == 0:
+    #             print("--33333333333333333333----------------------------------------------------------------------------------------")
+    #             self.xd = self.vertex3 
+    #             self.xd_dot = self.waypoint_speed * (self.vertex1 - self.vertex3) / self.side3_len
+    #             if self.x[0]+0.1 > self.xd[0]:
+    #                 self.arrivedCheck[2] = 1
+    #                 self.numTri += 1
+    #                 self.arrivedCheck = np.zeros(3)
+                    
+    #         print(self.xd, self.x, self.arrivedCheck)
+    #     else:
+    #         self.mark_traj_end(True)
+    # def triangle(self):
+    #     print("TRIANGLEE")
+    #     if not self.trajectory_started:
+    #         self.set_desired_states_to_current()
+    #         self.trajectory_started = True
+
+    #         #self.vertex1 = np.array([0.0, 4.0, 0.0])
+    #         #self.vertex2 = np.array([0.0, 2.0, 0.0])
+    #         #self.vertex3 = np.array([0.0, 0.0, 0.0])
+    #         self.numTri = 3
+    #         self.vertex3 = np.copy(self.x)
+    #         self.vertex1 = np.copy(self.x)
+    #         self.vertex1[2] -= 3
+            
+    #         self.vertex2 = np.copy(self.x)
+    #         self.vertex2[1] -= 4
+
+    #         self.side1_len = np.linalg.norm(self.vertex2 - self.vertex1)
+    #         self.side2_len = np.linalg.norm(self.vertex3 - self.vertex2)
+    #         self.side3_len = np.linalg.norm(self.vertex1 - self.vertex3)
+
+    #         total_len = self.side1_len + self.side2_len + self.side3_len
+
+    #         self.t1 = self.side1_len / self.waypoint_speed
+    #         self.t2 = self.side2_len / self.waypoint_speed
+    #         self.t3 = self.side3_len / self.waypoint_speed
+
+    #         self.t_traj = (self.t1 + self.t2 + self.t3)
+    #         print("FIRSTTTT", self.t, self.t1, self.t2, self.t3)
+    #     self.update_current_time()
+
+    #     print(self.t, self.t_traj)
+    #     if self.t < self.t_traj:
+    #         print("Hellooo")
+    #         if self.t < self.t1:
+    #             print("1st IFFFF", self.xd)
+    #             self.xd = self.vertex1 + (self.waypoint_speed * self.t) * (self.vertex2 - self.vertex1) / self.side1_len
+    #             print("AFTERERRERERER", self.xd)
+    #             self.xd_dot = self.waypoint_speed * (self.vertex2 - self.vertex1) / self.side1_len
+    #         elif self.t < self.t1 + self.t2:
+    #             self.xd = self.vertex2 + (self.waypoint_speed * (self.t - self.t1)) * (self.vertex3 - self.vertex2) / self.side2_len
+    #             self.xd_dot = self.waypoint_speed * (self.vertex3 - self.vertex2) / self.side2_len
+    #         else:
+    #             self.xd = self.vertex3
+    #             self.xd_dot = np.zeros(3)
+    #     else:
+    #         self.mark_traj_end(True)
+
     def triangle(self):
         print("TRIANGLEE")
         if not self.trajectory_started:
@@ -394,13 +501,12 @@ class Trajectory:
             #self.vertex1 = np.array([0.0, 4.0, 0.0])
             #self.vertex2 = np.array([0.0, 2.0, 0.0])
             #self.vertex3 = np.array([0.0, 0.0, 0.0])
-
             self.vertex3 = np.copy(self.x)
             self.vertex1 = np.copy(self.x)
-            self.vertex1[2] -= 4
+            self.vertex1[2] -= 3
             
             self.vertex2 = np.copy(self.x)
-            self.vertex2[1] -= 3
+            self.vertex2[1] -= 4
 
             self.side1_len = np.linalg.norm(self.vertex2 - self.vertex1)
             self.side2_len = np.linalg.norm(self.vertex3 - self.vertex2)
@@ -412,70 +518,23 @@ class Trajectory:
             self.t2 = self.side2_len / self.waypoint_speed
             self.t3 = self.side3_len / self.waypoint_speed
 
-            self.t_traj = (self.t1 + self.t2 + self.t3) * 3
+            self.t_traj = (self.t1 + self.t2 + self.t3)
             print("FIRSTTTT", self.t, self.t1, self.t2, self.t3)
         self.update_current_time()
 
-        if(self.numTri != 0):
-        #print(self.t, self.t_traj)
-            #if self.t < self.t_traj:
-            if self.arrivedCheck[0] == 0:
-                print("------1111111111111------------------------------------------------------------------------------------")
-                self.xd = self.vertex1 
+        print(self.t, self.t_traj)
+        if self.t < self.t_traj:
+            print("Hellooo")
+            if self.t < self.t1:
+                print("1st IFFFF", self.xd)
+                self.xd = self.vertex1 + (self.waypoint_speed * self.t) * (self.vertex2 - self.vertex1) / self.side1_len
+                print("AFTERERRERERER", self.xd)
                 self.xd_dot = self.waypoint_speed * (self.vertex2 - self.vertex1) / self.side1_len
-                if self.x[2]-1 < self.xd[2]:
-                    self.arrivedCheck[0] = 1
-                    
-            elif self.arrivedCheck[1] == 0:
-                print("------22222222------------------------------------------------------------------------------------")
-                self.xd = self.vertex2 
+            elif self.t < self.t1 + self.t2:
+                self.xd = self.vertex2 + (self.waypoint_speed * (self.t - self.t1)) * (self.vertex3 - self.vertex2) / self.side2_len
                 self.xd_dot = self.waypoint_speed * (self.vertex3 - self.vertex2) / self.side2_len
-                if self.x[1]+0.1 > self.xd[1]:
-                    self.arrivedCheck[1] = 1
-            elif self.arrivedCheck[2] == 0:
-                print("--33333333333333333333----------------------------------------------------------------------------------------")
-                self.xd = self.vertex3 
-                self.xd_dot = self.waypoint_speed * (self.vertex1 - self.vertex3) / self.side3_len
-                if self.x[0]+0.1 > self.xd[0]:
-                    self.arrivedCheck[2] = 1
-                    self.numTri += 1
-                    self.arrivedCheck = np.zeros(3)
-                    
-            print(self.xd, self.x, self.arrivedCheck)
+            else:
+                self.xd = self.vertex3
+                self.xd_dot = np.zeros(3)
         else:
             self.mark_traj_end(True)
-
-            #amplitude = 1.0
-            #period = 4.0
-            #t_phase = (self.t - self.t_traj) % period
-
-            #if t_phase < period /2:
-            #    self.xd[0] = amplitude * t_phase /(period /2)
-            #else:
-            #    self.xd[0] = amplitude - amplitude * (t_phase - period / 2) / (period / 2)
-
-        #self.update_current_time()
-        #if self.t > self.t_traj + period:
-            #self.mark_traj_end(True)
-'''
-self.t_traj = 10.0
-
-            self.b1d = self.get_current_b1()
-            self.trajectory_started = True
-
-        self.update_current_time()
-
-        if self.t < self.t_traj:
-            self.xd[2] = self.x_init[2] + (self.t / self.t_traj) * 5.0
-            self.xd_2dot[2] = 5.0 / self.t_traj
-        else:
-            if self.x[2] > 0.05: 
-                self.xd[2] = self.x_init[2] + (self.t / self.t_traj) * 5.0
-                self.xd_2dot[2] = 5.0/self.t_traj
-            else:
-                if self.x[2] > 0.05:
-                    self.xd[2] = 0.05
-                    self.xd_dot[2] = 0.0
-                else:
-                    self.mark_traj_end(True)
-        ''' 
