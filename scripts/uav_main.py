@@ -14,6 +14,9 @@ import threading
 import time
 
 IMU_TOPIC_NAME = 'uav_imu'
+CONTROL_TOPIC_NAME = 'uav_fm'
+GPS_TOPIC_NAME = 'uav_pos'
+
 
 def run_uav():
 
@@ -21,9 +24,12 @@ def run_uav():
     reset_uav()
 
     # Create threads
-    t1 = threading.Thread(target=thread_control)
-    t2 = threading.Thread(target=thread_imu, args=(IMU_TOPIC_NAME,))
-    t3 = threading.Thread(target=thread_gps)
+    t1 = threading.Thread(target=thread_control, 
+                          args=(CONTROL_TOPIC_NAME,))
+    t2 = threading.Thread(target=thread_imu,
+                          args=(IMU_TOPIC_NAME,))
+    t3 = threading.Thread(target=thread_gps,
+                          args=(GPS_TOPIC_NAME,))
     t4 = threading.Thread(target=thread_gui)
     t5 = threading.Thread(target=thread_log)
     

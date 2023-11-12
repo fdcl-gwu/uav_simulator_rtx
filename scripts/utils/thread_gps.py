@@ -7,7 +7,7 @@ import rospy
 from nav_msgs.msg import Odometry
 
 
-def thread_gps():
+def thread_gps(topic_name: str = 'uav_pos'):
     """
     The function called thread_gps that runs in a 
         separate thread and is used to handle GPS data for the rover.
@@ -28,7 +28,7 @@ def thread_gps():
     print('GPS: thread starting ..')
 
     # Subscribe to the 'uav_pos' topic and set the callback function to rover.ros_gps_callback
-    rospy.Subscriber('uav_pos', Odometry, rover.ros_gps_callback)
+    rospy.Subscriber(topic_name, Odometry, rover.ros_gps_callback)
 
     # Set the rate to 10 Hz
     rate = rospy.Rate(10)

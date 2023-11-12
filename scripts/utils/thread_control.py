@@ -8,7 +8,7 @@ from geometry_msgs.msg import Wrench
 from geometry_msgs.msg import Vector3
 
 
-def thread_control():
+def thread_control(topic_name: str = 'uav_fm'):
     """
     The function first creates a publisher for the uav_fm topic and sets the rate to 200 Hz. 
         It then initializes variables for calculating the frequency of the control updates.
@@ -27,7 +27,7 @@ def thread_control():
     print('CONTROL: thread starting ..')
 
     # Create a publisher for the 'uav_fm' topic
-    pub = rospy.Publisher('uav_fm', Wrench, queue_size=1)
+    pub = rospy.Publisher(topic_name, Wrench, queue_size=1)
 
     # Set the rate to 200 Hz
     rate = rospy.Rate(200)

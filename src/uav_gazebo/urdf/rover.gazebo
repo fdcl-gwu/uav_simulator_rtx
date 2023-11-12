@@ -1,4 +1,4 @@
-<?xml version="1.6"?>
+<?xml version="1.0"?>
 <robot>
   <gazebo reference="rover_link">
     <material>Gazebo/Red</material>    

@@ -14,6 +14,10 @@ launch-rover:
 simple:
 	@roslaunch $(PACKAGE) simple_world.launch
 
+killall:
+	@killall -9 gzserver gzclient python3
+	@killall rosmaster roscore rosout
+
 ## GUI/Control commands
 
 uav:
@@ -32,7 +36,7 @@ nlist:
 ninfo:
 	@rosnode info $(n)
 
-node_grah:
+node_graph:
 	@rosrun rqt_graph rqt_graph
 
 
@@ -61,3 +65,12 @@ ssend:
 
 reset_world:
 	@rosservice call /gazebo/reset_world
+
+reset_sim:
+	@rosservice call /gazebo/reset_simulation
+
+
+# ROS tools
+
+rviz:
+	@rviz
