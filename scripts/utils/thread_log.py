@@ -1,4 +1,4 @@
-from .rover import rover
+from .uav import uav
 
 import datetime
 import numpy as np
@@ -18,11 +18,11 @@ def thread_log():
     file_open = False
     
     # with perspective from the script directory
-    file_name = rover.t0.strftime('./data_logs/log_%Y%m%d_%H%M%S.txt')
+    file_name = uav.t0.strftime('./data_logs/log_%Y%m%d_%H%M%S.txt')
 
     rate = rospy.Rate(freq)
 
-    while not rospy.is_shutdown() and rover.on:
+    while not rospy.is_shutdown() and uav.on:
         t = datetime.datetime.now()
         dt = (t - t_pre).total_seconds()
         if dt < 1e-6:
@@ -30,12 +30,12 @@ def thread_log():
 
         freq = (freq * (avg_number - 1) + (1 / dt)) / avg_number
         t_pre = t
-        rover.freq_log = freq
+        uav.freq_log = freq
         
         dt_millis = t - t0
         t_millis = int(dt_millis.seconds * 1e3 + dt_millis.microseconds / 1e3)
 
-        if rover.save_on:
+        if uav.save_on:
             if not header_written:
                 header_written = True
                 write_header(file_name)
@@ -83,17 +83,17 @@ def write_date(f, t_millis):
     write_scalar(f, datetime.datetime.now().strftime('%H%M%S.%f'))
     write_scalar(f, t_millis)
 
-    write_vector(f, rover.x)
-    write_vector(f, rover.v)
-    write_vector(f, rover.a)
-    write_vector(f, rover.W)
-    write_3x3(f, rover.R)
+    write_vector(f, uav.x)
+    write_vector(f, uav.v)
+    write_vector(f, uav.a)
+    write_vector(f, uav.W)
+    write_3x3(f, uav.R)
 
-    write_vector(f, rover.control.xd)
-    write_vector(f, rover.control.xd_dot)
-    write_vector(f, rover.control.b1d)
-    write_vector(f, rover.control.Wd)
-    write_3x3(f, rover.control.Rd)
+    write_vector(f, uav.control.xd)
+    write_vector(f, uav.control.xd_dot)
+    write_vector(f, uav.control.b1d)
+    write_vector(f, uav.control.Wd)
+    write_3x3(f, uav.control.Rd)
     
     f.write('\n')
 

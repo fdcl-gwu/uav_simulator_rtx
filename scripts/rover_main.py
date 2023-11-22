@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from utils.rover import rover, reset_uav
+from utils.uav import rover, reset_uav
 from utils.gui import thread_gui
 from utils.thread_imu import thread_imu
 from utils.thread_gps import thread_gps

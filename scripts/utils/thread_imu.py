@@ -1,4 +1,4 @@
-from .rover import rover
+from .uav import uav
 
 import datetime
 import numpy as np
@@ -10,7 +10,7 @@ from sensor_msgs.msg import Imu
 def thread_imu(topic_name: str = 'uav_imu'):
     """
     The function first subscribes to the uav_imu topic and sets the callback function to 
-        rover.ros_imu_callback. It then sets the rate to 100 Hz.
+        uav.ros_imu_callback. It then sets the rate to 100 Hz.
 
     The function then initializes variables for calculating the frequency of the IMU updates. 
         It enters a loop that runs until the node is shutdown or the rover is turned off. 
@@ -24,8 +24,8 @@ def thread_imu(topic_name: str = 'uav_imu'):
     
     print('IMU: thread starting ..')
 
-    # Subscribe to the 'uav_imu' topic and set the callback function to rover.ros_imu_callback
-    rospy.Subscriber(topic_name, Imu, rover.ros_imu_callback)
+    # Subscribe to the 'uav_imu' topic and set the callback function to uav.ros_imu_callback
+    rospy.Subscriber(topic_name, Imu, uav.ros_imu_callback)
 
     # Set the rate to 100 Hz
     rate = rospy.Rate(100)
@@ -37,7 +37,7 @@ def thread_imu(topic_name: str = 'uav_imu'):
     avg_number = 100
 
     # Loop until the node is shutdown or the rover is turned off
-    while not rospy.is_shutdown() and rover.on:
+    while not rospy.is_shutdown() and uav.on:
 
         # Calculate the time since the last loop iteration
         t = datetime.datetime.now()
@@ -50,7 +50,7 @@ def thread_imu(topic_name: str = 'uav_imu'):
         # Calculate the frequency of the IMU updates
         freq = (freq * (avg_number - 1) + (1 / dt)) / avg_number
         t_pre = t
-        rover.freq_imu = freq
+        uav.freq_imu = freq
 
         # Sleep for the remainder of the loop period
         rate.sleep()

@@ -19,7 +19,7 @@ from std_msgs.msg import String
 from icecream import ic
 
 
-class Rover:
+class UAV:
     def __init__(self):
 
         self.on = True                      # Turn on/off the rover
@@ -85,7 +85,7 @@ class Rover:
 
         with self.lock:
             states = self.estimator.get_states()
-            desired = self.trajectory.get_desired(rover.mode, states, \
+            desired = self.trajectory.get_desired(uav.mode, states, \
                 self.x_offset, self.yaw_offset)
             fM = self.control.run(states, desired)
 
@@ -153,7 +153,7 @@ def reset_uav(model_name: str = 'uav'):
     It is used to reset the UAV to its initial state.
 
     The function first waits for the set_model_state service to become available. 
-        It then sets the initial position and attitude of the UAV to (0, 0, 0.2) and 
+        It then sets the initial position and attitude of the UAV to (0, 0, 0.3) and 
         (0, 0, 0, 1) respectively. It also sets the initial velocity of the UAV to zero.
 
     The function then creates a ModelState object with the initial pose and velocity of the UAV. 
@@ -167,7 +167,7 @@ def reset_uav(model_name: str = 'uav'):
     rospy.wait_for_service('/gazebo/set_model_state')
     
     # Set the initial position and attitude of the UAV
-    init_position = Point(x=0.0, y=0.0, z=0.2)
+    init_position = Point(x=0.0, y=0.0, z=0.3)
     init_attitude = Quaternion(x=0.0, y=0.0, z=0.0, w=1.0)
     init_pose = Pose(position=init_position, orientation=init_attitude)
 
@@ -191,4 +191,4 @@ def reset_uav(model_name: str = 'uav'):
     print('Resetting UAV successful ..')
 
 
-rover = Rover()
+uav = UAV()

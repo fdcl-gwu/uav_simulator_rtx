@@ -1,4 +1,4 @@
-from .rover import rover
+from .uav import uav
 
 import datetime
 import numpy as np
@@ -7,13 +7,13 @@ import rospy
 from nav_msgs.msg import Odometry
 
 
-def thread_gps(topic_name: str = 'uav_pos'):
+def thread_gps(topic_name: str = 'ground_truth/state'):
     """
     The function called thread_gps that runs in a 
-        separate thread and is used to handle GPS data for the rover.
+        separate thread and is used to handle GPS data for the uav.
 
     The function first subscribes to the uav_pos topic and sets the callback function 
-        to rover.ros_gps_callback. It then sets the rate to 10 Hz.
+        to uav.ros_gps_callback. It then sets the rate to 10 Hz.
 
     The function then initializes variables for calculating the frequency of the GPS updates. 
         It enters a loop that runs until the node is shutdown or the rover is turned off. 
@@ -27,8 +27,8 @@ def thread_gps(topic_name: str = 'uav_pos'):
     
     print('GPS: thread starting ..')
 
-    # Subscribe to the 'uav_pos' topic and set the callback function to rover.ros_gps_callback
-    rospy.Subscriber(topic_name, Odometry, rover.ros_gps_callback)
+    # Subscribe to the 'uav_pos' topic and set the callback function to uav.ros_gps_callback
+    rospy.Subscriber(topic_name, Odometry, uav.ros_gps_callback)
 
     # Set the rate to 10 Hz
     rate = rospy.Rate(10)
@@ -40,7 +40,7 @@ def thread_gps(topic_name: str = 'uav_pos'):
     avg_number = 10
 
     # Loop until the node is shutdown or the rover is turned off
-    while not rospy.is_shutdown() and rover.on:
+    while not rospy.is_shutdown() and uav.on:
 
         # Calculate the time since the last loop iteration
         t = datetime.datetime.now()
@@ -53,7 +53,7 @@ def thread_gps(topic_name: str = 'uav_pos'):
         # Calculate the frequency of the GPS updates
         freq = (freq * (avg_number - 1) + (1 / dt)) / avg_number
         t_pre = t
-        rover.freq_gps = freq
+        uav.freq_gps = freq
 
         # Sleep for the remainder of the loop period
         rate.sleep()

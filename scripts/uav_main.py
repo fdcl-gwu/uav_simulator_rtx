@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from utils.rover import rover, reset_uav
+from utils.uav import uav, reset_uav
 from utils.gui import thread_gui
 from utils.thread_imu import thread_imu
 from utils.thread_gps import thread_gps
@@ -13,15 +13,15 @@ import std_msgs
 import threading
 import time
 
-IMU_TOPIC_NAME = 'uav_imu'
+IMU_TOPIC_NAME = 'raw_imu'
 CONTROL_TOPIC_NAME = 'uav_fm'
-GPS_TOPIC_NAME = 'uav_pos'
+GPS_TOPIC_NAME = 'ground_truth/state'
 
 
 def run_uav():
 
-    rospy.init_node('uav', anonymous=True)
-    reset_uav()
+    rospy.init_node('uav_main', anonymous=True)
+    # reset_uav('quadrotor')
 
     # Create threads
     t1 = threading.Thread(target=thread_control, 

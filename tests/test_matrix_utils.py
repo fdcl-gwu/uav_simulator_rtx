@@ -2,7 +2,7 @@ import imp
 import numpy as np
 import unittest
 
-from scripts.matrix_utils import *
+from ..scripts.utils.matrix_utils import *
 
 
 class TestMatrixUtils(unittest.TestCase):

@@ -1,4 +1,4 @@
-from .rover import rover
+from .uav import uav
 
 import datetime
 import numpy as np
@@ -39,7 +39,7 @@ def thread_control(topic_name: str = 'uav_fm'):
     avg_number = 1000
 
     # Loop until the node is shutdown or the rover is turned off
-    while not rospy.is_shutdown() and rover.on:
+    while not rospy.is_shutdown() and uav.on:
 
         # Calculate the time since the last loop iteration
         t = datetime.datetime.now()
@@ -52,13 +52,13 @@ def thread_control(topic_name: str = 'uav_fm'):
         # Calculate the frequency of the control updates
         freq = (freq * (avg_number - 1) + (1 / dt)) / avg_number
         t_pre = t
-        rover.freq_control = freq
+        uav.freq_control = freq
 
         # Run the controller and get the resulting force and moment
-        fM = rover.run_controller()
+        fM = uav.run_controller()
         
         # If the motor is off or the mode is less than 2, set the force and moment to zero
-        if (not rover.motor_on) or (rover.mode < 2):
+        if (not uav.motor_on) or (uav.mode < 2):
             fM_message = Wrench(force=Vector3(x=0.0, y=0.0, z=0.0), \
                 torque=Vector3(x=0.0, y=0.0, z=0.0))
         # Otherwise, set the force and moment to the calculated values
