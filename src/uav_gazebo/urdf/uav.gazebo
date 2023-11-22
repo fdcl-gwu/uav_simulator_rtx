@@ -24,7 +24,7 @@
   <gazebo>
     <plugin name="pose_3d_plugin" filename="libgazebo_ros_p3d.so">
       <bodyName>link</bodyName>
-      <topicName>uav_pos</topicName>
+      <topicName>ground_truth/state</topicName>
       <frameName>world</frameName>
       <gaussianNoise>0.01</gaussianNoise>
       <updateRate>10</updateRate>

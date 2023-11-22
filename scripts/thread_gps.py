@@ -10,7 +10,7 @@ from nav_msgs.msg import Odometry
 def thread_gps():
     print('GPS: thread starting ..')
 
-    rospy.Subscriber('uav_pos', Odometry, rover.ros_gps_callback)
+    rospy.Subscriber('ground_truth/state', Odometry, rover.ros_gps_callback)
     rate = rospy.Rate(10) # 10 hz
 
     freq = 10.0
