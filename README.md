@@ -156,6 +156,11 @@ You only need to do the followings once (unless you change the Gazebo plugins)
     # From uav_simulator
     roslaunch uav_gazebo simple_world.launch 
     ```
+1. Run RViz for the visualization of the camera data:
+    ```
+    # From uav_simulator (in another terminal)
+    rviz -d view.rviz
+    ```
 1. Once the Gazebo is launched, run the rover code from a different rover terminal (if you already don't know, you may find [**tmux**](https://github.com/tmux/tmux/wiki) a life-saver):
     ```sh
     # From uav_simulator/scripts
