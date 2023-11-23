@@ -21,10 +21,6 @@
     </sensor>
   </gazebo>
 
-@@ -21,6 +21,48 @@
-    </sensor>
-  </gazebo>
-
   <!-- camera -->
   <gazebo reference="camera_link">
     <sensor type="camera" name="camera1">
