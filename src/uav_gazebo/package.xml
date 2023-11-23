@@ -53,6 +53,8 @@
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
-
+    <!-- Referenced https://github.com/sloretz/gazebo_model_path_example -->
+    <gazebo_ros gazebo_model_path="${prefix}/meshes"/>
+    <gazebo_ros gazebo_media_path="${prefix}/meshes"/>
   </export>
 </package>

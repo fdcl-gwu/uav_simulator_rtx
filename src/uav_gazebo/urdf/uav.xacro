@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot name="uav" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:include filename="$(find uav_gazebo)/urdf/uav.gazebo" />
+  <xacro:property name="camera_link" value="0.05" /> <!-- Size of square 'camera' box -->
 
   <link name="link">
     <pose>0 0 0.2 0 0 0</pose>
@@ -23,4 +24,36 @@
       </geometry>
     </visual>
   </link>
+
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0 0 -0.04" rpy="0 1.570796 0"/>
+    <parent link="link"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.03 0.02"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.03 0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>  
+  
 </robot>
